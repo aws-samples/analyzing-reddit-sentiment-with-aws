@@ -15,7 +15,7 @@ https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tu
 
 #### *Kinesis Firehose, S3, Glue, Athena Use-case*
 
-#### Updated July 2019 
+#### Updated October 2019 
 
 ### Table of Contents
 1. Overview	
