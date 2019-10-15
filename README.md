@@ -165,13 +165,10 @@ Example: raw-reddit-comment-delivery-stream
 
 7.	On the Destination page, choose the following options
 
-        		Destination – Choose Amazon S3
-
-        		S3 bucket – Choose an existing bucket created in tutorial Step 6
-
-        		S3 prefix – add "raw_reddit_comments" as prefix
-
-        		S3 error prefix - add "raw_reddit_comments_error" as prefix
+* Destination – Choose Amazon S3
+* S3 bucket – Choose an existing bucket created in tutorial Step 6
+* S3 prefix – add "raw_reddit_comments" as prefix
+* S3 error prefix - add "raw_reddit_comments_error" as prefix
 
 8.	Choose Next
 
