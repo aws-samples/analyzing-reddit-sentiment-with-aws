@@ -7,7 +7,8 @@ Learn how to use Kinesis Firehose, AWS Glue, S3, and Amazon Athena by streaming 
 This sample code is made available under the MIT-0 license. See the LICENSE file.
 
 ## Detailed tutorial can be found here: 
-	https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tutorial/Reddit-Streaming-Tutorial-v2.docx
+
+https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tutorial/Reddit-Streaming-Tutorial-v2.docx
 
 ## Real-Time Reddit Streaming Solution
 ### Self-Guided Tutorial
