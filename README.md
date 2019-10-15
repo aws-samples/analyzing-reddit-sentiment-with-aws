@@ -10,7 +10,7 @@ This sample code is made available under the MIT-0 license. See the LICENSE file
 
 https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tutorial/Reddit-Streaming-Tutorial-v2.docx
 
-## Real-Time Reddit Streaming Solution
+
 ### Self-Guided Tutorial
 
 #### *Kinesis Firehose, S3, Glue, Athena Use-case*
