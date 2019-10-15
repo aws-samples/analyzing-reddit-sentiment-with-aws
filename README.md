@@ -50,21 +50,21 @@ https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws
 
 ### 2. What you will accomplish
 
-•	Create a Reddit App using the Reddit developer site
-•	Provision an S3 bucket to act as a data lake and the target for your stream data 
-•	Provision a Kinesis Firehose Delivery Stream that will accept data from various sources and deliver it to the S3 bucket
-•	Deploy and run an EC2 Streaming python app via CloudFormation
-•	Create a Glue data catalog via CloudFormation to provide schemas and structure to your data 
-•	Use Athena to directly query your S3 bucket with SQL
+* Create a Reddit App using the Reddit developer site
+* Provision an S3 bucket to act as a data lake and the target for your stream data 
+* Provision a Kinesis Firehose Delivery Stream that will accept data from various sources and deliver it to the S3 bucket
+* Deploy and run an EC2 Streaming python app via CloudFormation
+* Create a Glue data catalog via CloudFormation to provide schemas and structure to your data 
+* Use Athena to directly query your S3 bucket with SQL
 
 ### 3. Prerequisites
 
 This tutorial requires: 
-•	A laptop with Wi-Fi running Microsoft Windows, Mac OS X, or Linux 
-•	An Internet browser of Chrome or Firefox 
-•	An AWS account to provision the AWS infrastructure 
-•	Skill level: A basic understanding of desktop computing is helpful but not required 
-•	AWS experience: Prior knowledge of base AWS infrastructure (VPC, EC2, S3) is helpful, but not required to complete this exercise
+* A laptop with Wi-Fi running Microsoft Windows, Mac OS X, or Linux 
+* An Internet browser of Chrome or Firefox 
+* An AWS account to provision the AWS infrastructure 
+* Skill level: A basic understanding of desktop computing is helpful but not required 
+* AWS experience: Prior knowledge of base AWS infrastructure (VPC, EC2, S3) is helpful, but not required to complete this exercise
 
 
 ### 4. Create your Reddit bot account
