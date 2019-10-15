@@ -45,7 +45,7 @@ In this tutorial, you will play the role of a data architect looking to moderniz
 
 The resources for this tutorial are located in this github repository: 
 	
-	https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws
+https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws
 
 
 ### 2. What you will accomplish
