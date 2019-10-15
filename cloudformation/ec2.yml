@@ -1,0 +1,239 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: EC2 reddit streaming server
+
+Parameters:
+
+  pKeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+  pInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t3.small
+    AllowedValues:
+    - t3.nano
+    - t3.micro
+    - t3.small
+    - t3.medium
+    - t3.large
+    - t3.xlarge
+    - t3.2xlarge
+    ConstraintDescription: must be a valid EC2 instance type.
+
+  pSSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+  pKinesisDeliveryStream:
+      Type: String
+      Description: The name of the kinesis delivery stream. (ex. raw-reddit-comment-delivery-stream )
+
+  pRedditUsername:
+      Type: String
+      Description: The username for your reddit account
+
+  pRedditPassword:
+      Type: String
+      NoEcho: True
+      Description: The password for your reddit account
+
+  pRedditClientID:
+      Type: String
+      Description: The client ID for your reddit app (found at https://www.reddit.com/prefs/apps/ )
+
+  pRedditAppSecret:
+      Type: String
+      Description: The app secret for your reddit app (found at https://www.reddit.com/prefs/apps/ )
+
+Mappings:
+  AWSInstanceType2Arch:
+    t3.nano:
+      Arch: HVM64
+    t3.micro:
+      Arch: HVM64
+    t3.small:
+      Arch: HVM64
+    t3.medium:
+      Arch: HVM64
+    t3.large:
+      Arch: HVM64
+    t3.xlarge:
+      Arch: HVM64
+    t3.2xlarge:
+      Arch: HVM64
+
+  AWSRegionArch2AMI:
+    us-east-1:
+      HVM64: ami-0b898040803850657
+
+Resources:
+
+  rEC2RedditStreamingApp:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType:
+        Ref: pInstanceType
+      IamInstanceProfile: !Ref rEC2IamInstanceProfile
+      SecurityGroups:
+      - Ref: rInstanceSecurityGroup
+      KeyName:
+        Ref: pKeyName
+      ImageId:
+        Fn::FindInMap:
+        - AWSRegionArch2AMI
+        - Ref: AWS::Region
+        - Fn::FindInMap:
+          - AWSInstanceType2Arch
+          - Ref: pInstanceType
+          - Arch
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ""
+            -
+              -  "#!/bin/bash -xe"
+              - "\n"
+              -  "echo \"install python and git...\""
+              - "\n"
+              -  "yum install python3 -y"
+              - "\n"
+              -  "yum install git -y"
+              - "\n"
+              -  "echo \"installing pip...\""
+              - "\n"
+              -  "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py"
+              - "\n"
+              -  " python3 get-pip.py"
+              - "\n"
+              -  "echo \"importing python libraries...\""
+              - "\n"
+              -  "python3 -m pip install praw"
+              - "\n"
+              -  "python3 -m pip install pandas"
+              - "\n"
+              -  "python3 -m pip install textblob"
+              - "\n"
+              -  "python3 -m pip install better_profanity"
+              - "\n"
+              -  "python3 -m pip install boto3"
+              - "\n"
+              -  "python3 -m textblob.download_corpora"
+              - "\n"
+              -  "echo \"downloads complete...\""
+              - "\n"
+              -  "echo \"creating dirs for git repo...\""
+              - "\n"
+              -  "mkdir reddit"
+              - "\n"
+              -  "cd reddit"
+              - "\n"
+              -  "git init"
+              - "\n"
+              -  "git clone https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws.git"
+              - "\n"
+              -  "echo \"git clone complete...\""
+              - "\n"
+              -  "cd analyzing-reddit-sentiment-with-aws/python-app"
+              - "\n"
+              -  "echo \"current dir:\""
+              - "\n"
+              -  "pwd"
+              - "\n"
+              - "echo \"changing permissions\""
+              - "\n"
+              - "chmod 777 comment-stream.py"
+              - "\n"
+              - "chmod 777 praw.ini"
+              - "\n"
+              - "echo \"editing files with user params\""
+              - "\n"
+              - "sed -i -r 's/<insert-delivery-stream-name>/"
+              - !Ref pKinesisDeliveryStream
+              - "/g' comment-stream.py"
+              - "\n"
+              - "sed -i -r 's/<insert-client-id-here>/"
+              - !Ref pRedditClientID
+              - "/g' praw.ini"
+              - "\n"
+              - "sed -i -r 's/<insert-client-secret-here>/"
+              - !Ref pRedditAppSecret
+              - "/g' praw.ini"
+              - "\n"
+              - "sed -i -r 's/<insert-username-here>/"
+              - !Ref pRedditUsername
+              - "/g' praw.ini"
+              - "\n"
+              - "sed -i -r 's/<insert-password-here>/"
+              - !Ref pRedditPassword
+              - "/g' praw.ini"
+              - "\n"
+              -  "echo \"running script...\""
+              - "\n"
+              -  "python3 comment-stream.py funny AskReddit worldnews pics science gaming todayilearned videos movies aww IAmA Music gifs news blog askscience explainlikeimfive Showerthoughts books mildlyinteresting television LifeProTips Jokes DIY space food gadgets nottheonion sports Art photoshopbattles GetMotivated Documentaries dataisbeautiful history Futurology personalfinance philosophy technology Fitness &>> realtime-comment-stream-log.txt"
+              - "\n"
+
+  rInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp:
+          Ref: pSSHLocation
+
+  rEC2IamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref rEC2KinesisRole
+
+  rEC2KinesisRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+
+Outputs:
+  oInstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value:
+      Ref: rEC2RedditStreamingApp
+  oAZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - rEC2RedditStreamingApp
+      - AvailabilityZone
+  oPublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - rEC2RedditStreamingApp
+      - PublicDnsName
+  oPublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - rEC2RedditStreamingApp
+      - PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-oPublicIP"
