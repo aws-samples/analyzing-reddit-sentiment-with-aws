@@ -496,6 +496,7 @@ sudo tail /tmp/reddit-stream.log
 Some common errors include:
 
 DEBUG:prawcore:Response: 503 (Reddit servers are down)
+
 DEBUG:prawcore:Response: 403 (Your Reddit username/password is incorrect)
 
 
