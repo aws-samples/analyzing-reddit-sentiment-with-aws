@@ -12,4 +12,4 @@ https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tu
 
 ## Architecture
 
-![Stack-Resources](architecture/reddit-t1-architecture.png)
+![Stack-Resources](https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/blob/master/architecture/reddit-t1-arch.png)
