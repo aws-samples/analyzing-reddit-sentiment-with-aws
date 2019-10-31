@@ -75,12 +75,12 @@ if len(sys.argv) >= 2:
                            'comment_id': comment.id,
                            'subreddit': str(comment.subreddit),
                            'comment_body': cleaned_comment,
-			               'comment_date': comment_date,
+			   'comment_date': comment_date,
                            'comment_distinguished': comment.distinguished,
                            'comment_is_submitter': comment.is_submitter,
                            'comment_tb_sentiment': pattern_polarity,
                            'comment_is_censored': is_censored,
-		                   'author_name': str(comment.author.name)
+		           'author_name': str(comment.author.name)
                            }
             print("==================================")
             num_comments_collected = num_comments_collected + 1
