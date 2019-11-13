@@ -17,3 +17,4 @@ https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tu
 ## Future Tutorials:
 * Realtime alerting with Kinesis Data Analytics
 * Loading existing data into Elasticsearch Service
+* Reporting with Redshift and QuickSight
