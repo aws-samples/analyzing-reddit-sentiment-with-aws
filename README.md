@@ -21,10 +21,7 @@
 11. Use Athena to develop insights
 12. Clean up the environment
 13. Conclusion
-
-## Appendix
-
-1. Troubleshooting your streaming application
+14. Appendix
 
 ----
 
@@ -82,11 +79,11 @@ This tutorial requires:
 
 9. Keep track of your Reddit account username, password, app client_id (in blue box), and app secret (in red box). These will be used in tutorial Step 11
 
-### Further Learning / References:
+### Further Learning / References: PRAW
 
 * [PRAW Quick start](https://praw.readthedocs.io/en/latest/getting_started/quick_start.html)
 
-### Next steps:
+### Next steps: S3
 
 * Our app information is registered now. Before you begin setting up the server or the delivery stream, you need a place to store the data that will be generated.
 
@@ -98,7 +95,7 @@ This tutorial requires:
 
 2. Choose Create bucket
 
-3. In the Bucket name field, type a unique DNS-compliant name for your new bucket. (The example screen shot uses the bucket name admin-created. You cannot use this name because S3 bucket names must be unique.) Create your own bucket name using the following naming guidelines:
+3. In the Bucket name field, type a unique DNS-compliant name for your new bucket. Create your own bucket name using the following naming guidelines:
 
     * The name must be unique across all existing bucket names in Amazon S3
 
@@ -118,7 +115,7 @@ This tutorial requires:
 
 Now that you’ve created a bucket, let’s set up a delivery stream for your data.
 
-### Next steps:
+### Next steps: Glue
 
 * S3 is a place to store many different kinds of data / files.  To provide the data files with structure that services can reference, you need to set up a data catalog.  AWS Glue is the perfect service for this use case.
 
@@ -154,12 +151,12 @@ We will use Cloudformation YAML templates located in this GitHub repository
 
 12. Click on Events tab. Wait until the stack status is CREATE_COMPLETE
 
-### Further Learning / References:
+### Further Glue Learning / References: AWS Glue
 
 * [What is Glue?](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
 * [Populate Data Catalog with Cloudformation Template](https://docs.aws.amazon.com/glue/latest/dg/populate-with-cloudformation-templates.html)
 
-### Next steps:
+### Next steps: Kinesis Firehose
 
 * Now you have a destination for your data (S3) and a data catalog (AWS Glue).  Next, let’s deploy the pipes that will allow data to travel between services.
 
@@ -206,14 +203,14 @@ We will use Cloudformation YAML templates located in this GitHub repository
 
 15. On the Review page, review your settings, and then choose Create Delivery Stream
 
-### Further Learning / References:
+### Further Learning / References : Kinesis Firehose
 
 * [What is Firehose?](https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html)
 * [Firehose Basic Delivery](https://docs.aws.amazon.com/firehose/latest/dev/basic-deliver.html)
 
-### Next steps:
+### Next steps: EC2
 
-The pipeline and destination are now available for use.  In the next several steps, you will be creating the python application that generates Reddit comment data.
+* The pipeline and destination are now available for use.  In the next several steps, you will be creating the python application that generates Reddit comment data.
 
 ----
 
@@ -233,13 +230,13 @@ The pipeline and destination are now available for use.  In the next several ste
 
     Important: This is the only chance for you to save the private key file. You'll need to provide the name of your key pair when you launch an instance and the corresponding private key each time you connect to the instance
 
-### Further Learning / References:
+### Further Learning / References: EC2 Key Pairs
 
 * [User Guide: EC2 Key Pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
 
-### Next steps:
+### Next steps: Cloudformation
 
-A key pair will allow you to securely access a server. In the next steps, you will deploy the server and connect to the server using the key pair.
+A key pair will allow you to securely access a server. In the next steps, you will deploy the server.
 
 ----
 
@@ -294,11 +291,11 @@ We will use Cloudformation YAML templates located in this GitHub repository.
 
 20. Ensure that an EC2 instance has been created and running. (This can take several minutes to deploy)
 
-### Further Learning / References:
+### Further Learning / References: EC2 User Data
 
 * [User Guide: EC2 User Data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html)
 
-### Next steps:
+### Next steps: Monitoring Kinesis Firehose
 
 * Now that the EC2 instance is provisioned and the script is running, the data is streaming to Kinesis Firehose. In the next step we’ll monitor the data as it moves through the delivery stream and into S3.
 
@@ -326,11 +323,11 @@ We will use Cloudformation YAML templates located in this GitHub repository.
 
 Now that data is streaming into s3, let’s build a data catalog so that you can query our s3 files
 
-### Further Learning / References:
+### Further Learning / References: Kinesis Firehose
 
 * [Firehose Monitoring](https://docs.aws.amazon.com/firehose/latest/dev/monitoring.html)
 
-### Next steps:
+### Next steps: Amazon Athena
 
 * Now that you have all of our infrastructure in place, you can finally begin to analyze the data currently streaming into our data lake.  You will use Amazon Athena, a great tool for ad-hoc queries on S3 data.
 
@@ -338,7 +335,7 @@ Now that data is streaming into s3, let’s build a data catalog so that you can
 
 ## 11. Use Athena to develop insights
 
-1. Open the [AWS CloudFormation console](https://console.aws.amazon.com/athena/) or select Athena in the Services dropdown
+1. Open the [Amazon Athena console](https://console.aws.amazon.com/athena/) or select Athena in the Services dropdown
 
 2. Choose the glue database (reddit_glue_db) populated on the left view
 
@@ -438,12 +435,11 @@ Now that data is streaming into s3, let’s build a data catalog so that you can
         FROM raw_reddit_comments
         WHERE LOWER(comment_body) LIKE '%puppy%')
 
-
-### Further Learning / References:
+### Further Learning / References: Athena and Glue
 
 * [Using Glue and Athena](https://docs.aws.amazon.com/athena/latest/ug/glue-athena.html)
 
-### Next Steps:
+### Next Steps: Terminate Services
 
 * Hopefully by now you have found some interesting insights into Reddit and the overall public sentiment.  Athena is a great service for ad-hoc queries like this.  You are approaching the end of this tutorial, so you will start terminating services and instances to prevent further billing.
 
@@ -455,10 +451,10 @@ Now that data is streaming into s3, let’s build a data catalog so that you can
 
 1. EC2 – Our EC2 instance was created from a CloudFormation template, we’ll delete the stack and the key pair
 
-    * Open the AWS CloudFormation console at https://console.aws.amazon.com/cloudformation or select CloudFormation under Services dropdown
+    * Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation) or select CloudFormation under Services dropdown
     * On the left panel that says stacks – click on the EC2 stack you’ve created
     * Click Delete on top of the pane
-    * Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/ or select EC2 under Services dropdown
+    * Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) or select EC2 under Services dropdown
     * In the navigation pane, under NETWORK & SECURITY, choose Key Pairs
     * Click on the key pair name you’ve created and hit Delete on top
 
@@ -484,7 +480,7 @@ In this tutorial, you have walked through the process of deploying a sample Pyth
 
 ----
 
-## Appendix
+## 14. Appendix
 
 ### I. Troubleshooting your streaming application
 
@@ -513,7 +509,6 @@ Some common errors include:
     DEBUG:prawcore:Response: 502 (Reddit server request error)
     DEBUG:prawcore:Response: 403 (Your Reddit username/password is incorrect)
 
-
 ----
 
 ## License Summary
@@ -522,13 +517,14 @@ This sample code is made available under the MIT-0 license. See the LICENSE file
 
 ## Detailed tutorial can be downloaded here:
 
-https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tutorial/Reddit-Streaming-Tutorial-v2.docx
+* [Microsoft Word Document](https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/raw/master/tutorial/Reddit-Streaming-Tutorial-v2.docx)
 
 ## Architecture
 
 ![Stack-Resources](https://github.com/aws-samples/analyzing-reddit-sentiment-with-aws/blob/master/architecture/reddit-t1-arch.png)
 
 ## Future Tutorials:
+
 * Realtime alerting with Kinesis Data Analytics
 * Loading existing data into Elasticsearch Service
 * Reporting with Redshift and QuickSight
