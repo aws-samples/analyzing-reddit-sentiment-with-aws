@@ -493,11 +493,11 @@ In this tutorial, you have walked through the process of deploying a sample Pyth
 
 5. Confirm that the correct credentials have been added to your application with the following command:
 
-        sudo cat /reddit/reddit-kinesis/praw.ini
+        sudo cat /reddit/analyzing-reddit-sentiment-with-aws/python-app/praw.ini
 
 6. Confirm that the correct delivery stream name was added to your application with the following command. Look for DeliveryStreamName=’\<your delivery stream name>’
 
-        sudo cat /reddit/reddit-kinesis/comment-stream.py
+        sudo cat /reddit/analyzing-reddit-sentiment-with-aws/python-app/comment-stream.py
 
 7. If there are errors found, delete the CloudFormation stack that didn’t work properly. Go back and retry Step 10. If there are no errors you can check the logs:
 
