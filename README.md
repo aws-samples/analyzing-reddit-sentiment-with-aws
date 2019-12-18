@@ -528,3 +528,4 @@ This sample code is made available under the MIT-0 license. See the LICENSE file
 * Realtime alerting with Kinesis Data Analytics
 * Loading existing data into Elasticsearch Service
 * Reporting with Redshift and QuickSight
+* Automating infrastructure changes with CodePipeline
