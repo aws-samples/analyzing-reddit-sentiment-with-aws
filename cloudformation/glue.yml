@@ -2,18 +2,19 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Glue Stack Layer of CloudFormation template for migrating data from oracle database to s3
 
 Parameters:
-  pS3StackName:
-    Description: Name of an active CloudFormation stack that contains the s3 resources.
-    Type: String
-    MinLength: 1
-    MaxLength: 255
-    AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
-    Default: reddit-s3
-
   pGlueDBName:
-      Default: reddit_glue_db
+      Default: 'reddit_glue_db'
       Type: String
       Description: glue database name
+
+  pBucketName:
+        Type: String
+        Description: s3 destination bucket
+
+  pGlueTableRaw:
+        Default: 'raw_reddit_comments'
+        Type: String
+        Description: Glue Raw Data Table
 
 Resources:
 
@@ -30,14 +31,14 @@ Resources:
       DatabaseName: !Ref rGlueDatabase
       CatalogId: !Ref AWS::AccountId
       TableInput:
-        Name: raw_reddit_comments
+        Name: !Ref pGlueTableRaw
         Parameters: { "classification" : "json" }
         StorageDescriptor:
           Location:
             Fn::Join:
                 - ''
                 - - "s3://"
-                  - Fn::ImportValue: !Sub "${pS3StackName}-oS3Bucket"
+                  - !Ref pBucketName
                   - "/raw_reddit_comments/"
           InputFormat: org.apache.hadoop.mapred.TextInputFormat
           OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
@@ -61,48 +62,6 @@ Resources:
         PartitionKeys: []
         TableType: EXTERNAL_TABLE
 
-  rGlueTableComprehend:
-    Type: AWS::Glue::Table
-    Properties:
-      DatabaseName: !Ref rGlueDatabase
-      CatalogId: !Ref AWS::AccountId
-      TableInput:
-        Name: comprehended_reddit_comments
-        Parameters: { "classification" : "json" }
-        StorageDescriptor:
-          Location:
-            Fn::Join:
-                - ''
-                - - "s3://"
-                  - Fn::ImportValue: !Sub "${pS3StackName}-oS3Bucket"
-                  - "/comprehended_reddit_comments/"
-          InputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat
-          OutputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat
-          Compressed: false
-          NumberOfBuckets: -1
-          SerdeInfo:
-            SerializationLibrary: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
-            Parameters:
-              serialization.format: '1'
-          BucketColumns: []
-          SortColumns: []
-          StoredAsSubDirectories: false
-          Columns:
-            - {Name: comment_id, Type: string}
-            - {Name: subreddit, Type: string}
-            - {Name: author_name, Type: string}
-            - {Name: comment_body, Type: string}
-            - {Name: comment_date, Type: string}
-            - {Name: comment_distinguished, Type: string}
-            - {Name: comment_is_submitter, Type: boolean}
-            - {Name: comment_tb_sentiment, Type: double}
-            - {Name: comment_is_censored, Type: int}
-            - {Name: comment_comprehend_sentiment, Type: string}
-            - {Name: comment_comprehend_entities, Type: string}
-            - {Name: comment_comprehend_key_phrases, Type: string}
-        PartitionKeys: []
-        TableType: EXTERNAL_TABLE
-
 Outputs:
 
   oGlueDatabase:
@@ -116,9 +75,3 @@ Outputs:
     Value: !Ref rGlueTableRaw
     Export:
       Name: !Sub "${AWS::StackName}-oGlueTableRaw"
-
-  oGlueTableComprehend:
-    Description: table created for Glue (reddit analyzed)
-    Value: !Ref rGlueTableComprehend
-    Export:
-      Name: !Sub "${AWS::StackName}-oGlueTableComprehend"
