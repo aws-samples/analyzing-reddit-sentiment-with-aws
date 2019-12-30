@@ -8,6 +8,7 @@ import json
 import time
 import logging
 import pandas as pd
+import ast
 from textblob import TextBlob
 from textblob import Blobber
 from better_profanity import profanity
@@ -34,7 +35,7 @@ def get_comment_sentiment(comment):
 def process_or_store(comment):
     try:
         response = firehose_client.put_record(
-            DeliveryStreamName='<insert-delivery-stream-name>',
+            DeliveryStreamName='reddit-kibana',
             Record={
                 'Data': (json.dumps(comment, ensure_ascii=False) + '\n').encode('utf8')
                     }
@@ -44,7 +45,7 @@ def process_or_store(comment):
         logging.exception("Problem pushing to firehose")
 
 
-firehose_client = boto3.client('firehose', region_name="us-east-1")
+firehose_client = boto3.client('firehose', region_name="us-west-2")
 LOG_FILENAME = '/tmp/reddit-stream.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 
@@ -67,15 +68,16 @@ if len(sys.argv) >= 2:
                 is_censored = 0
 
             cleaned_comment = profanity.censor((remove_emoji(str(comment.body))))
-            comment_date = str(datetime.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y-%m-%d %H:%M:%S'))
+            comment_date = str(datetime.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y/%m/%d %H:%M:%S'))
             sentiment = get_comment_sentiment(cleaned_comment)
             pattern_polarity = round(sentiment.polarity,4)
 
+
             commentjson = {
-                           'comment_id': comment.id,
+            			   '@timestamp' : comment_date,
+                          'comment_id': comment.id,
                            'subreddit': str(comment.subreddit),
                            'comment_body': cleaned_comment,
-			   'comment_date': comment_date,
                            'comment_distinguished': comment.distinguished,
                            'comment_is_submitter': comment.is_submitter,
                            'comment_tb_sentiment': pattern_polarity,
