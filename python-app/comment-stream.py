@@ -74,7 +74,7 @@ if len(sys.argv) >= 2:
 
 
             commentjson = {
-            			   '@timestamp' : comment_date,
+            			  '@timestamp' : comment_date,
                           'comment_id': comment.id,
                            'subreddit': str(comment.subreddit),
                            'comment_body': cleaned_comment,
