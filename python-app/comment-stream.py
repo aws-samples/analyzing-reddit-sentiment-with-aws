@@ -8,7 +8,6 @@ import json
 import time
 import logging
 import pandas as pd
-import ast
 from textblob import TextBlob
 from textblob import Blobber
 from better_profanity import profanity
@@ -35,7 +34,7 @@ def get_comment_sentiment(comment):
 def process_or_store(comment):
     try:
         response = firehose_client.put_record(
-            DeliveryStreamName='reddit-kibana',
+            DeliveryStreamName='<insert-delivery-stream-name>',
             Record={
                 'Data': (json.dumps(comment, ensure_ascii=False) + '\n').encode('utf8')
                     }
@@ -45,7 +44,7 @@ def process_or_store(comment):
         logging.exception("Problem pushing to firehose")
 
 
-firehose_client = boto3.client('firehose', region_name="us-west-2")
+firehose_client = boto3.client('firehose', region_name="us-east-1")
 LOG_FILENAME = '/tmp/reddit-stream.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 
@@ -93,4 +92,3 @@ if len(sys.argv) >= 2:
         print(e)
 else:
     print("please enter subreddit.")
-
