@@ -67,15 +67,16 @@ if len(sys.argv) >= 2:
                 is_censored = 0
 
             cleaned_comment = profanity.censor((remove_emoji(str(comment.body))))
-            comment_date = str(datetime.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y-%m-%d %H:%M:%S'))
+            comment_date = str(datetime.datetime.utcfromtimestamp(comment.created_utc).strftime('%Y/%m/%d %H:%M:%S'))
             sentiment = get_comment_sentiment(cleaned_comment)
             pattern_polarity = round(sentiment.polarity,4)
 
+
             commentjson = {
-                           'comment_id': comment.id,
+            			  '@timestamp' : comment_date,
+                          'comment_id': comment.id,
                            'subreddit': str(comment.subreddit),
                            'comment_body': cleaned_comment,
-			   'comment_date': comment_date,
                            'comment_distinguished': comment.distinguished,
                            'comment_is_submitter': comment.is_submitter,
                            'comment_tb_sentiment': pattern_polarity,
@@ -91,4 +92,3 @@ if len(sys.argv) >= 2:
         print(e)
 else:
     print("please enter subreddit.")
-
