@@ -525,8 +525,8 @@ This sample code is made available under the MIT-0 license. See the LICENSE file
 
 ## Future Tutorials:
 
-* Automating Data Lake optimization with Glue jobs and triggers
-* Realtime alerting with Kinesis Data Analytics
-* Loading existing data into Elasticsearch Service
-* Reporting with Redshift and QuickSight
-* Automating infrastructure changes with CodePipeline
+* Automating Data Lake optimization with Glue jobs and triggers (Est. February 2020)
+* Realtime alerting with Kinesis Data Analytics (Est. March 2020)
+* Loading Data into Elasticsearch Service (Est. April 2020)
+* Reporting with Redshift and QuickSight (Est. May 2020
+* Automating infrastructure changes with CodePipeline (Est. June 2020)
