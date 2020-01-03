@@ -525,6 +525,7 @@ This sample code is made available under the MIT-0 license. See the LICENSE file
 
 ## Future Tutorials:
 
+* Automating Data Lake optimization with Glue jobs and triggers
 * Realtime alerting with Kinesis Data Analytics
 * Loading existing data into Elasticsearch Service
 * Reporting with Redshift and QuickSight
