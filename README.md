@@ -54,6 +54,9 @@ This tutorial requires:
 * Skill level: A basic understanding of desktop computing is helpful but not required
 * AWS experience: Prior knowledge of base AWS infrastructure (VPC, EC2, S3) is helpful, but not required to complete this exercise
 
+
+### **Note: This Tutorial only works in region: us-east-1**
+
 ----
 
 ## 4. Create your Reddit bot account
