@@ -490,19 +490,23 @@ In this tutorial, you have walked through the process of deploying a sample Pyth
 1. Find the Public IP address that you noted down in Step 10 and the key pair you downloaded in Step 9.
 2. Open up a Terminal
 3. Go to the directory that your key pair was downloaded to.
-4. SSH into the machine with the following command:
+4. Ensure key has correct permissions
+
+         chmod 400 <key pair name>.pem
+      
+5. SSH into the machine with the following command:
 
         ssh -i <insert your key pair name here> ec2-user@<insert public IP address here>
 
-5. Confirm that the correct credentials have been added to your application with the following command:
+6. Confirm that the correct credentials have been added to your application with the following command:
 
         sudo cat /reddit/analyzing-reddit-sentiment-with-aws/python-app/praw.ini
 
-6. Confirm that the correct delivery stream name was added to your application with the following command. Look for DeliveryStreamName=’\<your delivery stream name>’
+7. Confirm that the correct delivery stream name was added to your application with the following command. Look for DeliveryStreamName=’\<your delivery stream name>’
 
         sudo cat /reddit/analyzing-reddit-sentiment-with-aws/python-app/comment-stream.py
 
-7. If there are errors found, delete the CloudFormation stack that didn’t work properly. Go back and retry Step 10. If there are no errors you can check the logs:
+8. If there are errors found, delete the CloudFormation stack that didn’t work properly. Go back and retry Step 10. If there are no errors you can check the logs:
 
         sudo tail /tmp/reddit-stream.log
 
