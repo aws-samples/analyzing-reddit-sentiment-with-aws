@@ -186,9 +186,9 @@ We will use Cloudformation YAML templates located in this GitHub repository
 
     * S3 bucket – Choose an existing bucket created in tutorial Step 6
 
-    * S3 prefix – add "raw_reddit_comments" as prefix
+    * S3 prefix – add "raw_reddit_comments/" as prefix
 
-    * S3 error prefix - add "raw_reddit_comments_error" as prefix
+    * S3 error prefix - add "raw_reddit_comments_error/" as prefix
 
 8. Choose Next
 
