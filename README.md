@@ -53,7 +53,7 @@ This tutorial requires:
 * An AWS account to provision the AWS infrastructure
 * Skill level: A basic understanding of desktop computing is helpful but not required
 * AWS experience: Prior knowledge of base AWS infrastructure (VPC, EC2, S3) is helpful, but not required to complete this exercise
-
+* Basic Linux Experience: needed to troubleshoot any errors in the EC2 instance. to learn go [here](http://linuxcommand.org/lc3_lts0020.php)
 
 ### **Note: This Tutorial only works in region: us-east-1**
 
