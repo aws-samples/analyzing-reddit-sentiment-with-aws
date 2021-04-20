@@ -40,12 +40,12 @@ Resources:
                 - - "s3://"
                   - !Ref pBucketName
                   - "/raw_reddit_comments/"
-          InputFormat: org.apache.hadoop.mapred.TextInputFormat
-          OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+          InputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat
           BucketColumns: []
           SortColumns: []
           SerdeInfo:
-            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+            SerializationLibrary: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
             Parameters:
               serialization.format: '1'
           StoredAsSubDirectories: false
